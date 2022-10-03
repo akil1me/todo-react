@@ -10,7 +10,9 @@ const Todo = () => {
   const addPost = (evt) => {
     evt.preventDefault()
     const obj = {
-      title: inputValue
+      title: inputValue,
+      id: new Date().getTime(),
+      isComlitedd: false
     }
 
     setTodo([...todo, obj])
@@ -22,6 +24,23 @@ const Todo = () => {
     setIputValue("")
   }
 
+  const deliteTodo = (id) => {
+    let newTodo = todo.filter((item) => item.id !== id)
+    setTodo(newTodo);
+  }
+
+  const isComplited = (id) => {
+    let newTodo = todo.map((item) => {
+      if (item.id === id) {
+        item.isComlitedd = !item.isComlitedd;
+      }
+      return item;
+    })
+    setTodo(newTodo);
+
+    console.log(newTodo);
+  }
+
   return (
     <>
       {/* Main */}
@@ -29,7 +48,7 @@ const Todo = () => {
         <section className="todo">
           <h1 className="text-center h1">Todo React</h1>
 
-          <form className="todo__form" autoComplete="off" onSubmit={addPost} onReset={removePost}>
+          <form className="todo__form" onSubmit={addPost} onReset={removePost}>
             <div className="row todo__content">
               <div className="col-6 p-0">
                 <input className="form-control"
@@ -46,7 +65,7 @@ const Todo = () => {
             </div>
           </form>
 
-          <TodoList todos={todo} />
+          <TodoList todos={todo} deliteTodo={deliteTodo} isComplited={isComplited} />
         </section>
       </main>
     </>
